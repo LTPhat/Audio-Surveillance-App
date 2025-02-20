@@ -1,0 +1,8 @@
+LLM_MODEL: "llama3-8b-8192"
+AUDIO_CAPTIONING_MODEL_CLOTHO: "wsntxxn/effb2-trm-clotho-captioning"
+AUDIO_CAPTIONING_MODEL_AUDIO_CAP: "wsntxxn/effb2-trm-audio-captioning"
+AUDIO_CAPTIONING_TOKENIZER: "wsntxxn/clotho-simple-tokenizer"
+EMOTION_REG_MODEL: "speechbrain/emotion-recognition-wav2vec2-IEMOCAP"
+EMOTION_REG_CLASSNAME: "CustomEncoderWav2vec2Classifier"
+DIARIZER_EMBED: "speechbrain/spkrec-ecapa-voxceleb"
+VOICE_GENDER_CLASSIFIER: "JaesungHuh/voice-gender-classifier"
