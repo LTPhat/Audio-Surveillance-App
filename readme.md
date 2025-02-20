@@ -2,9 +2,6 @@
 
 ## Introduction
 - This is a chatbot-like application that analyzes audio recordings using multiple audio models. It extracts relevant information and provides responses based on user queries into LLM assistant, enabling multiple audio-based tasks for the purposes of surveilance applications.
-- Overall flow:
-
-![alt text](https://github.com/LTPhat/Audio-Surveillance-App/blob/main/example/flow.png)
 
 ## Supported tasks
 | Tasks  | Definition  | Links  | Paper |
@@ -19,22 +16,13 @@
 | Speech Deepfake Detection (DSD) | Classifier fake or real voice |  Self-developed   | https://ieeexplore.ieee.org/abstract/document/10704095/|
 | Audio Captioning (AC) | Describe audio's content |  https://huggingface.co/wsntxxn/effb2-trm-clotho-captioning   |https://arxiv.org/abs/2407.14329 |
 
-
-## Project structure
-- ``config/``: LLM, model configs.
-- ``helper/``: utils functions.
-- ``prompts/``: LLM prompt.
-- ``helper/``: utils functions.
-- ``run_task/``: Containing script of all tasks.
-- ``samples/``: containing test samples (.wav).
-- ``user_final_infor/``, ``user_input/``, ``user_output``: Containing final JSON results, input files, output of all tasks of all input files.
 ## Run application
 ### 1) Install conda enviroments
 Env 1: asc_aed (For ASC, AED tasks)
 
   ```sh
   conda activate asc_aed
-  pip install -r requirements_asc_aed.txt
+  pip install -r server/requirements_asc_aed.txt
   conda deactivate
   ```
 
@@ -42,7 +30,7 @@ Env2: whisper (For S2T, SD, SER, LID, VGD)
 
   ```sh
   conda activate whisper
-  pip install -r requirements_whisper.txt
+  pip install -r server/requirements_whisper.txt
   conda deactivate
   ```
 
@@ -50,7 +38,7 @@ Env3: captioning_deepfake (For AC, DSD)
 
   ```sh
   conda activate captioning_deepfake
-  pip install -r requirements_captioning_df.txt
+  pip install -r server/requirements_captioning_df.txt
   conda deactivate
   ```
 
@@ -58,27 +46,25 @@ Env3: captioning_deepfake (For AC, DSD)
 - Get your own API keys:
   - Free Grob API key for LLM from here: https://console.groq.com/keys
   - Get Pyannote access token from here: https://huggingface.co/pyannote/speaker-diarization-3.1 
-- Create .env file on the root directory of the project and pass following content in that file
-.env
+- Create .env as server/.env:
 ```sh
 GROQ_API_KEY=[YOUR_GROB_API_KEY_HERE]
 PYANNOTE_KEY=[YOUR_PYANNOTE_ACCESS_TOKEN_HERE]
 ```
 ### 3) Run 
-#### Run all tasks using Bash script (alternative)
-- Put all the input files to ``user_input/`` folder.
-- Run script.
-```sh
-  conda deactivate
-  bash run_all_tasks.sh
-  ```
-#### Run application 
+#### Client
 ```sh
   conda activate whisper
+  cd client/
   streamlit run streamlit_app.py
   ```
-### 4) Note
-- Further improvement
-  - Change prompt: --> ``prompts/sample_prompt.py``
-  - Change LLM config: --> ``configs/llm_config.yaml`` 
+#### Server
+```sh
+  conda activate whisper
+  cd server/
+  uvicorn api:main --host 0.0.0.0 --port 8.0.0.0
+  ```
+
+### Run application using Docker-compose
+...
 
