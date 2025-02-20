@@ -1,0 +1,4 @@
+/server/model/asc_aed/01_source/aed_module/pre_trained_models/*pth filter=lfs diff=lfs merge=lfs -text
+/server/model/speaker_diarization/model/*ckpt filter=lfs diff=lfs merge=lfs -text
+/server/model/speech_to_text_lid/pre_trained_model/*pt filter=lfs diff=lfs merge=lfs -text
+/server/model/wav2vec2_checkpoints/*bin filter=lfs diff=lfs merge=lfs -text
