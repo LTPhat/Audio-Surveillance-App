@@ -1,0 +1,7 @@
+# Model settings
+LLM_MODEL: "llama3-8b-8192"
+TEMPERATURE: 0.3
+MAX_TOKENS: 256
+TOP_P: 0.5
+STOP: null
+STREAM: false
