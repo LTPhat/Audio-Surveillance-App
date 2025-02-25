@@ -21,9 +21,9 @@ with open("./configs/llm_config.yaml", "r") as file:
 client = Groq(
     api_key=os.getenv('GROQ_API_KEY'))
 
-FASTAPI_ASC_AED = "http://localhost:8000/process_audio/"
-FASTAPI_WHISPER = "http://localhost:8001/process_audio/"
-FASTAPI_CAP_DF = "http://localhost:8002/process_audio/"
+FASTAPI_ASC_AED = "http://server_asc_aed:8000/process_audio/"
+FASTAPI_WHISPER = "http://server_whisper:8001/process_audio/"
+FASTAPI_CAP_DF = "http://server_cap_df:8002/process_audio/"
 
 #--------------------------------------------------------------------------------------
 # Streamlit Page Configuration
@@ -163,10 +163,7 @@ def main():
            
             responses = asyncio.run(process_audio(uploaded_file))
             response_asc_aed, response_whisper, response_cap_df = responses
-            # print("Response from ASC-AED:", response_asc_aed)
-            # print("Response from Whisper:", response_whisper)
-            # print("Response from CAP-DF:", response_cap_df)
-            
+    
             end_time = time.time()
             final_response = merge_json_files(response_asc_aed, response_whisper, response_cap_df)
             print(final_response)
@@ -196,7 +193,7 @@ def main():
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": prompt})
         # Display user message in chat message container
-        with st.chat_message("user"):
+        with st.chat_message("user", avatar="./img/person.jpg"):
             st.markdown(prompt)
 
         # Prepare conversation history for LLM
