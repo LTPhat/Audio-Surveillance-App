@@ -87,7 +87,9 @@ def create_human_speech_information(output_dir, save_dir):
             human_speech_infor = task_data['text transcription'] # Define timeline of S2T as baseline
             for idx, item in enumerate(task_data['text transcription']):
                 # remove 'id' field
-                item.pop('id', 0)
+                if isinstance(item, dict):
+                    item.pop('id', 0)
+                
                 # diarization
                 try:
                     human_speech_infor[idx]['speaker'] = task_data['speaker diarization'][idx]['speaker']
@@ -115,4 +117,41 @@ def create_human_speech_information(output_dir, save_dir):
         with open(os.path.join(save_path, "human_speech_info.json"), "w") as output:
             json.dump([human_tasks_infor], output, indent=4)
         print(f"Save final information of file {folder} in {save_path}")
-        
+    
+
+
+def load_packages_to_remove():
+    # List of packages from the --index-url to remove
+    packages_to_remove = {
+        "certifi", "charset-normalizer", "cmake", "colorama", "fbgemm-gpu", "filelock", "fsspec", 
+        "idna", "intel-openmp", "iopath", "jinja2", "lightning-utilities", "lit", "markupsafe", 
+        "mkl", "mpmath", "mypy-extensions", "networkx", "numpy", "nvidia-cublas-cu11", 
+        "nvidia-cuda-cupti-cu11", "nvidia-cuda-nvrtc-cu11", "nvidia-cuda-runtime-cu11", 
+        "nvidia-cudnn-cu11", "nvidia-cufft-cu11", "nvidia-curand-cu11", "nvidia-cusolver-cu11", 
+        "nvidia-cusparse-cu11", "nvidia-nccl-cu11", "nvidia-nccl-cu12", "nvidia-nvtx-cu11", 
+        "packaging", "pillow", "portalocker", "pyre-extensions", "pytorch-triton", 
+        "pytorch-triton-rocm", "pytorch-triton-xpu", "requests", "setuptools", "sympy", "tbb", 
+        "torch", "torch-cuda80", "torch-model-archiver", "torch-tb-profiler", "torch-tensorrt", 
+        "torchao", "torchaudio", "torchcodec", "torchcsprng", "torchdata", "torchmetrics", 
+        "torchrec", "torchrec-cpu", "torchserve", "torchtext", "torchtune", "torchvision", 
+        "tqdm", "triton", "typing-extensions", "typing-inspect", "urllib3", "xformers"
+    }
+    return packages_to_remove
+
+def clean_requirements(input_file, output_file):
+    packages_to_remove = load_packages_to_remove()
+    
+    with open(input_file, "r") as f_in, open(output_file, "w") as f_out:
+        for line in f_in:
+            # Strip whitespace and comments
+            line = line.strip()
+            if not line or line.startswith("#"):
+                f_out.write(line + "\n")
+                continue
+            
+            # Extract package name (before any version specifier like ==, >=, etc.)
+            package_name = line.split("==")[0].split(">=")[0].split("<=")[0].split(">")[0].split("<")[0].strip()
+            
+            # Write line only if package is not in the removal list
+            if package_name.lower() not in packages_to_remove:
+                f_out.write(line + "\n")
