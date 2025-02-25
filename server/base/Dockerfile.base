@@ -1,23 +1,38 @@
-# Use the official Miniconda image
-FROM nvidia/cuda:12.4.1-devel-ubuntu22.04 as base
+# Use NVIDIA CUDA image as the base
+FROM nvidia/cuda:11.8.0-devel-ubuntu22.04 AS base
 
 # Set working directory
 WORKDIR /app
 
-# Install dependencies
-RUN apt-get update && apt-get install -y wget
-RUN apt-get update && apt-get install -y git
+RUN apt-get update && \
+    apt-get install -y wget && \
+    wget -q https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/libnccl2_2.15.1-1+cuda11.8_amd64.deb && \
+    wget -q https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/libnccl-dev_2.15.1-1+cuda11.8_amd64.deb && \
+    wget -q https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/libcudnn9-cuda-11_9.7.1.26-1_amd64.deb && \
+    wget -q https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/libcudnn9-dev-cuda-11_9.7.1.26-1_amd64.deb && \
+    wget -q https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/libcudnn9-static-cuda-11_9.7.1.26-1_amd64.deb && \
+    wget -q https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cudnn9-cuda-11-8_9.7.1.26-1_amd64.deb 
 
+RUN dpkg -i libcudnn9-cuda-11_9.7.1.26-1_amd64.deb libnccl2_2.15.1-1+cuda11.8_amd64.deb libnccl-dev_2.15.1-1+cuda11.8_amd64.deb libcudnn9-dev-cuda-11_9.7.1.26-1_amd64.deb libcudnn9-static-cuda-11_9.7.1.26-1_amd64.deb cudnn9-cuda-11-8_9.7.1.26-1_amd64.deb && \
+    rm -f *.deb
+    
+# Install dependencies
+RUN apt-get update && apt-get install -y git && \
+    rm -rf /var/lib/apt/lists/*  # Clean up APT cache to reduce image size
+
+# Install Miniconda
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \
     bash miniconda.sh -b -p /opt/conda && \
-    rm miniconda.sh && \
-    /opt/conda/bin/conda init
+    rm miniconda.sh 
 
 # Set Conda environment variables
 ENV PATH="/opt/conda/bin:$PATH"
 
-COPY requirements_base.txt .
-RUN conda create --name base_env --file requirements_common.txt
+# Initialize Conda (but do not create any environment here)
+RUN /opt/conda/bin/conda init
 
-# Keep base_env activated 
-SHELL ["conda", "run", "-n", "base_env", "/bin/bash", "-c"]
+# Use bash as the default shell
+SHELL ["/bin/bash", "-c"]
+    
+CMD ["bash"]
+
