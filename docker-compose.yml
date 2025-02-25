@@ -1,23 +1,49 @@
 version: '3.8'
 services:
-  server:
+  server_asc_aed: 
     build: 
-      context: ./server
+      context: ./server/service_asc_aed
       dockerfile: Dockerfile
-    container_name: server
+    container_name: service_asc_aed
+    image: thesis_server_asc_aed
     env_file:
       - .env
     ports:
       - "8000:8000"
     restart: always
-    
+  server_whisper: 
+    build: 
+      context: ./server/service_whisper
+      dockerfile: Dockerfile
+    container_name: service_whisper
+    image: thesis_server_whisper
+    env_file:
+      - .env
+    ports:
+      - "8001:8001"
+    restart: always
+  server_cap_df: 
+    build: 
+      context: ./server/service_cap_df
+      dockerfile: Dockerfile
+    image: thesis_server_cap_df
+    container_name: service_cap_df
+    env_file:
+      - .env
+    ports:
+      - "8002:8002"
+    restart: always
+
   client:
     build:
       context: ./client
       dockerfile: Dockerfile
+    image: thesis_client
     container_name: client
     depends_on:
-      - server
+      - server_asc_aed
+      - server_whisper
+      - server_cap_df
     env_file:
       - .env
     ports:
@@ -26,3 +52,5 @@ services:
 networks:
   app:
     driver: bridge
+
+
