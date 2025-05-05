@@ -86,9 +86,6 @@ def create_human_speech_information(output_dir, save_dir):
         try:
             human_speech_infor = task_data['text transcription'] # Define timeline of S2T as baseline
             for idx, item in enumerate(task_data['text transcription']):
-                # remove 'id' field
-                if isinstance(item, dict):
-                    item.pop('id', 0)
                 
                 # diarization
                 try:

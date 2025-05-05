@@ -33,6 +33,7 @@ conda deactivate
 
 # #=========== Script to run Whisper-based task (human-speech) (.env2) (S2T, Diarization, Emotion, Language Detection, Voice Gender, Speaker Count,...)
 conda activate whisper
+echo "Start analysing human speech information"
 cd "$PROJECT_DIR/model"
 python run_human_speech_tasks.py --project_dir "$PROJECT_DIR" --input_dir "$INPUT_DIR" --output_dir "$OUTPUT_DIR" --segment_dir "$SEGMENT_DIR"
 conda deactivate
