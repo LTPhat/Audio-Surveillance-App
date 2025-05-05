@@ -7,7 +7,7 @@ This is a chatbot-like application that analyzes audio recordings using multiple
 | Tasks  | Definition  | Links  | Paper |
 | :------------ |:---------------:| :-----:|  :-----:|
 | Acoustic Scene Classification (ASC)  | Classify audio recording into predefined scene categories | Self-developed | [Here](https://ieeexplore.ieee.org/abstract/document/10335258/)|
-| Acoustic Sound Event Detection (AED)   | Identify and localizing specific sound events in an audio recording   | Self-developed | n/a   |
+| Acoustic Sound Event Detection (AED)   | Identify and localizing specific sound events in an audio recording   | [Here](https://github.com/qiuqiangkong/audioset_tagging_cnn)|[Here](https://arxiv.org/abs/1912.10211)  |
 | Speech-to-text (S2T) | Convert spoken language into written text   |    [Here](https://github.com/openai/whisper)    | [Here](https://arxiv.org/abs/2212.04356) |
 | Language Identification (LID) | Identify spoken language    |    [Here](https://github.com/openai/whisper)    | [Here](https://arxiv.org/abs/2212.04356) |
 | Speaker Diarization (SD) | Segment into speaker-specific sections |  [Here](https://huggingface.co/speechbrain/spkrec-ecapa-voxceleb)    | [Here](https://arxiv.org/abs/2106.04624) |
@@ -101,7 +101,7 @@ sudo docker build -t my_base_image -f Dockerfile.base .
 sudo docker-compose up --build -d
 ```
 
-### Step 3: Check application
+### Step 4: Check application
 Open web browser and check:
 - Streamlit app: ``http://0.0.0.0:8501/``
 
