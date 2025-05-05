@@ -1,4 +1,4 @@
-# SurvellAI: An Audio Analyzer for Surveillance Application
+# Aud-Sur: An Audio Analyzer Assistant for Audio Surveillance Applications
 
 ## 1) Introduction
 This is a chatbot-like application that analyzes audio recordings using multiple audio models. It extracts relevant information and provides responses based on user queries into LLM assistant, enabling multiple audio-based tasks for the purposes of surveilance applications.
@@ -100,3 +100,16 @@ sudo docker build -t my_base_image -f Dockerfile.base .
 ```sh
 sudo docker-compose up --build -d
 ```
+
+### Step 3: Check application
+Open web browser and check:
+- Streamlit app: ``http://0.0.0.0:8501/``
+
+- Asc_aed service: ``http://0.0.0.0:8000/`` or ``http://0.0.0.0:8000/docs/`` (For testing)
+
+- Whisper service: ``http://0.0.0.0:8001/`` or ``http://0.0.0.0:8001/docs/`` (For testing)
+
+- Cap_df service: ``http://0.0.0.0:8002/`` or ``http://0.0.0.0:8002/docs/`` (For testing)
+
+
+
