@@ -11,6 +11,13 @@ services:
     ports:
       - "8000:8000"
     restart: always
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
   server_whisper: 
     build: 
       context: ./server/service_whisper
@@ -22,6 +29,13 @@ services:
     ports:
       - "8001:8001"
     restart: always
+    deploy:
+        resources:
+          reservations:
+            devices:
+              - capabilities: [gpu]
+    environment:
+        - NVIDIA_VISIBLE_DEVICES=all
   server_cap_df: 
     build: 
       context: ./server/service_cap_df
@@ -33,6 +47,14 @@ services:
     ports:
       - "8002:8002"
     restart: always
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - capabilities: [gpu]
+    # runtime: nvidia
+    # environment:
+    #   - NVIDIA_VISIBLE_DEVICES=all
 
   client:
     build:
