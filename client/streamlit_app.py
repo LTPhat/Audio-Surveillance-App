@@ -24,6 +24,9 @@ client = Groq(
 FASTAPI_ASC_AED = "http://server_asc_aed:8000/process_audio/"
 FASTAPI_WHISPER = "http://server_whisper:8001/process_audio/"
 FASTAPI_CAP_DF = "http://server_cap_df:8002/process_audio/"
+# FASTAPI_ASC_AED = "http://localhost:8000/process_audio/"
+# FASTAPI_WHISPER = "http://localhost:8001/process_audio/"
+# FASTAPI_CAP_DF = "http://localhost:8002/process_audio/"
 
 #--------------------------------------------------------------------------------------
 # Streamlit Page Configuration
@@ -61,7 +64,8 @@ def decorate():
     unsafe_allow_html=True
     )
     title  = """
-    <h1 class = "title" >SurveilAI: An Audio Analyzer for Surveillance Application</h1>
+    <h1 class = "title" >Aud-Sur: An Audio Analyzer Assistant for
+        Audio Surveillance Application</h1>
     </div>
     """
     st.markdown(title,
@@ -101,7 +105,7 @@ def decorate():
         )
 
     st.sidebar.markdown("---")
-    st.sidebar.write("**SurveilAI:** An Audio Analyzer for Surveillance Application")
+    st.sidebar.write("**Aud-Sur**: An Audio Analyzer Assistant for Audio Surveillance Application")
     st.sidebar.markdown("---")
     
     # Display basic interactions
@@ -163,10 +167,22 @@ def main():
            
             responses = asyncio.run(process_audio(uploaded_file))
             response_asc_aed, response_whisper, response_cap_df = responses
+            
+            # Check 
+            # st.write(response_asc_aed)
+            # st.write(response_whisper)
+            # st.write(response_cap_df)
     
             end_time = time.time()
+            # Standalize
             final_response = merge_json_files(response_asc_aed, response_whisper, response_cap_df)
-            print(final_response)
+            save_json_dir = './save_jsons'
+            os.makedirs(save_json_dir, exist_ok=True)  # Ensure the directory exists
+            filename = f"{save_json_dir}/{uploaded_file.name[:-4]}.json"
+            with open(filename, "w") as f:
+                json.dump([final_response], f, indent=4)
+
+
             st.session_state.json_label = final_response
             st.success(f"Processing completed! Processing time: {end_time - start_time:.2f}s")
 
